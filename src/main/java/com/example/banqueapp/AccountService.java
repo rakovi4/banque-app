@@ -1,7 +1,10 @@
 package com.example.banqueapp;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AccountService {
-    int balance = 0;
+    private int balance = 0;
     public int getBalance() {
         return balance;
     }
