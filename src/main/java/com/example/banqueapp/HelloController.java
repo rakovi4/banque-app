@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.http.HttpClient;
+
 @RestController
 public class HelloController {
 
@@ -16,13 +18,15 @@ public class HelloController {
     public String hello(){
         return "hello Marina!\n";
     }
-    @GetMapping(path = "/balance")
-    public String balance(){
+
+    @GetMapping(path = "/customers/{customerId}/balance")
+    public String balance(@PathVariable(name = "customerId") String customerId){
         return String.valueOf(service.getBalance());
     }
 
-    @GetMapping(path = "/add")
-    public void add(@RequestParam(name = "money") String money){
+    @GetMapping(path = "/customers/{customerId}/add")
+    public void add(@PathVariable(name = "customerId") String customerId,
+                    @RequestParam(name = "money") String money){
         service.addMoney(Integer.parseInt(money));
     }
 

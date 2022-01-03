@@ -11,6 +11,10 @@ import org.junit.Test;
 
 public class Tests {
 
+    public static final String CUSTOMER_URL =
+            "http://localhost:8080/customers/8b081381-cabc-4471-9e00-f239cfbb7f3d";
+    public static final String BALANCE_URL = CUSTOMER_URL + "/balance";
+    public static final String ADD_URL = CUSTOMER_URL + "/add?money=100";
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Test
@@ -28,7 +32,8 @@ public class Tests {
     }
 
     private HttpResponse<String> getBalance() throws IOException, InterruptedException, URISyntaxException {
-        return httpClient.send(getHttpRequest("http://localhost:8080/balance"), BodyHandlers.ofString());
+        return httpClient.send(getHttpRequest(BALANCE_URL),
+                BodyHandlers.ofString());
     }
 
     private HttpRequest getHttpRequest(String str) throws URISyntaxException {
@@ -47,7 +52,7 @@ public class Tests {
     }
 
     private void addMoney() throws IOException, InterruptedException, URISyntaxException {
-        httpClient.send(getHttpRequest("http://localhost:8080/add?money=100"), BodyHandlers.ofString());
+        httpClient.send(getHttpRequest(ADD_URL), BodyHandlers.ofString());
     }
 
 //    @Test

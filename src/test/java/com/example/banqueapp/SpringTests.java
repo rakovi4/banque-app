@@ -14,9 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.http.HttpClient;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-class SprintTests {
+class SpringTests {
+
+	public static final String CUSTOMER_URL =
+			"http://localhost:8080/customers/8b081381-cabc-4471-9e00-f239cfbb7f3d";
+	public static final String BALANCE_URL = CUSTOMER_URL + "/balance";
+	public static final String ADD_URL = CUSTOMER_URL + "/add?money=100";
+
 	@Autowired
 	MockMvc mockMvc;
 	@MockBean
@@ -32,16 +40,17 @@ class SprintTests {
 
 	@Test
 	void getBalanceTest() throws Exception {
-		mockMvc.perform(get("/balance"))
+		mockMvc.perform(get(BALANCE_URL))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("0")));
 
 		verify(service).getBalance();
 	}
+
 	@Test
 	void addMoneyTest() throws Exception {
-		mockMvc.perform(get("/add?money=100"))
+		mockMvc.perform(get(ADD_URL))
 				.andDo(print())
 				.andExpect(status().isOk());
 
