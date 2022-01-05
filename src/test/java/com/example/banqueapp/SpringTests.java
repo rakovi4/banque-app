@@ -14,21 +14,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.http.HttpClient;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class SpringTests {
 
+	public static final String CUSTOMER_ID = "8b081381-cabc-4471-9e00-f239cfbb7f3d";
 	public static final String CUSTOMER_URL =
-			"http://localhost:8080/customers/8b081381-cabc-4471-9e00-f239cfbb7f3d";
+			"http://localhost:8080/customers/" + CUSTOMER_ID;
 	public static final String BALANCE_URL = CUSTOMER_URL + "/balance";
-	public static final String ADD_URL = CUSTOMER_URL + "/add?money=100";
+	public static final String ADD_100_URL = CUSTOMER_URL + "/add?money=100";
+	private static final String WITHDRAW_100_URL = CUSTOMER_URL + "/withdraw?money=100";
 
 	@Autowired
 	MockMvc mockMvc;
 	@MockBean
-	AccountService service;
+	AccountService mockAccountService;
 
 	@Test
 	void test() throws Exception {
@@ -45,18 +45,25 @@ class SpringTests {
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("0")));
 
-		verify(service).getBalance();
+		verify(mockAccountService).getBalance(CUSTOMER_ID);
 	}
 
 	@Test
 	void addMoneyTest() throws Exception {
-		mockMvc.perform(get(ADD_URL))
+		mockMvc.perform(get(ADD_100_URL))
 				.andDo(print())
 				.andExpect(status().isOk());
 
-		verify(service).addMoney(100);
+		verify(mockAccountService).addMoney(100,CUSTOMER_ID );
 	}
 
+	@Test
+	void withdrawTest() throws Exception {
+		mockMvc.perform(get(WITHDRAW_100_URL))
+				.andDo(print())
+				.andExpect(status().isOk());
 
+		verify(mockAccountService).addMoney(100, CUSTOMER_ID);
+	}
 
 }

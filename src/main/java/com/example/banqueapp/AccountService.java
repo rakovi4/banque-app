@@ -2,14 +2,19 @@ package com.example.banqueapp;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class AccountService {
     private int balance = 0;
-    public int getBalance() {
-        return balance;
+    private HashMap balanceMap = new HashMap();
+
+    public int getBalance(String customerId) {
+        balanceMap.get(customerId);
+        return (int) balanceMap.get(customerId);
     }
 
-    public void addMoney(int money) {
+    public void addMoney(int money, String customerId) {
         balance += money;
     }
 
@@ -19,6 +24,7 @@ public class AccountService {
         }
         balance = balance - money;
     }
+
 
 
 }
