@@ -22,8 +22,8 @@ class SpringTests {
 	public static final String CUSTOMER_URL =
 			"http://localhost:8080/customers/" + CUSTOMER_ID;
 	public static final String BALANCE_URL = CUSTOMER_URL + "/balance";
-	public static final String ADD_100_URL = CUSTOMER_URL + "/add?money=100";
-	private static final String WITHDRAW_100_URL = CUSTOMER_URL + "/withdraw?money=100";
+	public static final String ADD_101_URL = CUSTOMER_URL + "/add?money=101";
+	private static final String WITHDRAW_99_URL = CUSTOMER_URL + "/withdraw?money=99";
 
 	@Autowired
 	MockMvc mockMvc;
@@ -50,20 +50,20 @@ class SpringTests {
 
 	@Test
 	void addMoneyTest() throws Exception {
-		mockMvc.perform(get(ADD_100_URL))
+		mockMvc.perform(get(ADD_101_URL))
 				.andDo(print())
 				.andExpect(status().isOk());
 
-		verify(mockAccountService).addMoney(100,CUSTOMER_ID );
+		verify(mockAccountService).addMoney(101, CUSTOMER_ID );
 	}
 
 	@Test
 	void withdrawTest() throws Exception {
-		mockMvc.perform(get(WITHDRAW_100_URL))
+		mockMvc.perform(get(WITHDRAW_99_URL))
 				.andDo(print())
 				.andExpect(status().isOk());
 
-		verify(mockAccountService).addMoney(100, CUSTOMER_ID);
+		verify(mockAccountService).withdrawMoney(99, CUSTOMER_ID);
 	}
 
 }

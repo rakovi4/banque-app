@@ -35,15 +35,23 @@ public class AccountServiceTest {
     public void whenAdd200Withdraw100_ShouldReturn100(){
         AccountService service = new AccountService();
         service.addMoney(200, CUSTOMER_ID1);
-        service.withdrawMoney(100);
+        service.withdrawMoney(100, CUSTOMER_ID1);
         assertEquals(100,service.getBalance(CUSTOMER_ID1));
+    }
+
+    @Test
+    public void whenAdd100Withdraw99_ShouldReturn100(){
+        AccountService service = new AccountService();
+        service.addMoney(100, CUSTOMER_ID1);
+        service.withdrawMoney(99, CUSTOMER_ID1);
+        assertEquals(1,service.getBalance(CUSTOMER_ID1));
     }
 
     @Test
     public void whenAdd200Withdraw300_ShouldThrowException(){
         AccountService service = new AccountService();
         service.addMoney(200, CUSTOMER_ID1);
-        assertThrows(NotEnoughMoneyException.class, () -> service.withdrawMoney(300));
+        assertThrows(NotEnoughMoneyException.class, () -> service.withdrawMoney(300, CUSTOMER_ID1));
     }
 
     @Test
@@ -51,7 +59,7 @@ public class AccountServiceTest {
         AccountService service = new AccountService();
         service.addMoney(200, CUSTOMER_ID1);
         try {
-            service.withdrawMoney(300);
+            service.withdrawMoney(300, CUSTOMER_ID1);
         } catch (Exception ignored) {}
         assertEquals(200,service.getBalance(CUSTOMER_ID1));
     }
@@ -61,5 +69,11 @@ public class AccountServiceTest {
         AccountService service = new AccountService();
         service.addMoney(200, CUSTOMER_ID1);
         assertEquals(0, service.getBalance(CUSTOMER_ID2));
+    }
+
+    @Test
+    public void whenBalance0Withdraw300_ShouldThrowException() {
+        AccountService service = new AccountService();
+        assertThrows(NotEnoughMoneyException.class, () -> service.withdrawMoney(300, CUSTOMER_ID1));
     }
 }
