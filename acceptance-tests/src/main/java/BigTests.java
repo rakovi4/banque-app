@@ -7,17 +7,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.UUID;
+
 import org.junit.Test;
 
 public class BigTests {
 
-    public static final String CUSTOMER_ID1 = "8b081381-cabc-4471-9e00-f239cfbb7f3d";
-    public static final String CUSTOMER_ID2 = "8b081381-cabc-4471-9e00-f239cfbb7f4d";
-    public static final String CUSTOMER_ID3 = "8b081381-cabc-4471-9e00-f239cfbb7f5d";
-    public static final String CUSTOMER_URL_WITHDRAW =
-            "http://localhost:8080/customers/" + CUSTOMER_ID3;
+    public  final String CUSTOMER_ID1 = UUID.randomUUID().toString();
+    public final String CUSTOMER_URL_WITHDRAW =
+            "http://localhost:8080/customers/" + CUSTOMER_ID1;
     private final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final String WITHDRAW_99_URL = CUSTOMER_URL_WITHDRAW + "/withdraw?money=99";
+    private final String WITHDRAW_99_URL = CUSTOMER_URL_WITHDRAW + "/withdraw?money=99";
 
 
 
@@ -51,8 +51,8 @@ public class BigTests {
 
     @Test
     public void addAndGetTest() throws URISyntaxException, IOException, InterruptedException {
-        addMoney(CUSTOMER_ID2);
-        HttpResponse<String> response = getBalance(CUSTOMER_ID2);
+        addMoney(CUSTOMER_ID1);
+        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
         assertEquals("100",response.body());
 
     }
@@ -63,10 +63,10 @@ public class BigTests {
 
     @Test
     public void addAndWithdrawTest() throws IOException, URISyntaxException, InterruptedException {
-        addMoney(CUSTOMER_ID3);
+        addMoney(CUSTOMER_ID1);
         HttpResponse<String> httpResponse = httpClient.send(getHttpRequest(WITHDRAW_99_URL), BodyHandlers.ofString());
         assertEquals(200, httpResponse.statusCode());
-        HttpResponse<String> response = getBalance(CUSTOMER_ID3);
+        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
         assertEquals("1", response.body());
 
     }
