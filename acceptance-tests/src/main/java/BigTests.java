@@ -71,5 +71,20 @@ public class BigTests {
 
     }
 
+    @Test
+    public void addAndGetTestPost() throws URISyntaxException, IOException, InterruptedException {
+        HttpResponse<String> response1 = httpClient.send(HttpRequest.newBuilder()
+                .uri(new URI(("http://localhost:8080/customers/" + CUSTOMER_ID1) + "/add"))
+                .POST(HttpRequest.BodyPublishers.ofString("100"))
+                .build(), BodyHandlers.ofString());
+
+        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
+        assertEquals(200,response1.statusCode());
+        assertEquals("100",response.body());
+
+    }
+
+
+
 
 }

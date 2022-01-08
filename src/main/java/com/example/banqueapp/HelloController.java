@@ -1,10 +1,7 @@
 package com.example.banqueapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpClient;
 
@@ -34,6 +31,12 @@ public class HelloController {
     public void withdraw(@PathVariable(name = "customerId") String customerId,
                     @RequestParam(name = "money") String money){
         service.withdrawMoney(Integer.parseInt(money), customerId);
+    }
+
+    @PostMapping(path = "/customers/{customerId}/add")
+    public void addPost(@PathVariable(name = "customerId") String customerId,
+                    @RequestBody String money){
+        service.addMoney(Integer.parseInt(money), customerId);
     }
 
 }

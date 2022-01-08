@@ -3,6 +3,7 @@ package com.example.banqueapp;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,6 +65,15 @@ class SpringTests {
 				.andExpect(status().isOk());
 
 		verify(mockAccountService).withdrawMoney(99, CUSTOMER_ID);
+	}
+
+	@Test
+	void addMoneyTestPost() throws Exception {
+		mockMvc.perform(post(CUSTOMER_URL + "/add").content("101"))
+				.andDo(print())
+				.andExpect(status().isOk());
+
+		verify(mockAccountService).addMoney(101, CUSTOMER_ID );
 	}
 
 }
