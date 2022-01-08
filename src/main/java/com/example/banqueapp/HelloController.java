@@ -21,12 +21,6 @@ public class HelloController {
         return String.valueOf(service.getBalance(customerId));
     }
 
-    @GetMapping(path = "/customers/{customerId}/add")
-    public void add(@PathVariable(name = "customerId") String customerId,
-                    @RequestParam(name = "money") String money){
-        service.addMoney(Integer.parseInt(money), customerId);
-    }
-
     @GetMapping(path = "/customers/{customerId}/withdraw")
     public void withdraw(@PathVariable(name = "customerId") String customerId,
                     @RequestParam(name = "money") String money){

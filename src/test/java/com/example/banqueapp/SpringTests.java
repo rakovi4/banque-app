@@ -49,14 +49,6 @@ class SpringTests {
 		verify(mockAccountService).getBalance(CUSTOMER_ID);
 	}
 
-	@Test
-	void addMoneyTest() throws Exception {
-		mockMvc.perform(get(ADD_101_URL))
-				.andDo(print())
-				.andExpect(status().isOk());
-
-		verify(mockAccountService).addMoney(101, CUSTOMER_ID );
-	}
 
 	@Test
 	void withdrawTest() throws Exception {
