@@ -20,8 +20,6 @@ public class BigTests {
     private final String WITHDRAW_99_URL = CUSTOMER_URL_WITHDRAW + "/withdraw?money=99";
 
 
-
-
     @Test
     public void testHelloEndpoint() throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response = httpClient.send(getHttpRequest("http://localhost:8080/hello"), BodyHandlers.ofString());
@@ -49,34 +47,49 @@ public class BigTests {
                 .build();
     }
     
+//    @Test
+//    public void addAndWithdrawTest() throws IOException, URISyntaxException, InterruptedException {
+//        addMoneyPost(CUSTOMER_ID1);
+//        HttpResponse<String> httpResponse = httpClient.send(getHttpRequest(WITHDRAW_99_URL), BodyHandlers.ofString());
+//        assertEquals(200, httpResponse.statusCode());
+//        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
+//        assertEquals("1", response.body());
+//
+//    }
+
+    private HttpResponse<String> addMoneyPost(String customer_id1) throws URISyntaxException, IOException, InterruptedException {
+        return httpClient.send(HttpRequest.newBuilder()
+                .uri(new URI(("http://localhost:8080/customers/" + CUSTOMER_ID1) + "/add"))
+                .POST(HttpRequest.BodyPublishers.ofString("100"))
+                .build(), BodyHandlers.ofString());
+    }
+
     @Test
-    public void addAndWithdrawTest() throws IOException, URISyntaxException, InterruptedException {
+    public void addAndGetTestPost() throws URISyntaxException, IOException, InterruptedException {
+        HttpResponse<String> responseAddMoneyPost = addMoneyPost(CUSTOMER_ID1);
+        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
+        assertEquals(200, responseAddMoneyPost.statusCode());
+        assertEquals("100",response.body());
+
+        
+    }
+
+    @Test
+    public void addAndWithdrawTestPost() throws IOException, URISyntaxException, InterruptedException {
         addMoneyPost(CUSTOMER_ID1);
-        HttpResponse<String> httpResponse = httpClient.send(getHttpRequest(WITHDRAW_99_URL), BodyHandlers.ofString());
-        assertEquals(200, httpResponse.statusCode());
+        HttpResponse<String> httpResponsePost = WithdrawPost(CUSTOMER_ID1);
+        assertEquals(200, httpResponsePost.statusCode());
         HttpResponse<String> response = getBalance(CUSTOMER_ID1);
         assertEquals("1", response.body());
 
     }
 
-    private HttpResponse<String> addMoneyPost(String customer_id1) throws URISyntaxException, IOException, InterruptedException {
-        HttpResponse<String> response1 = httpClient.send(HttpRequest.newBuilder()
-                .uri(new URI(("http://localhost:8080/customers/" + CUSTOMER_ID1) + "/add"))
-                .POST(HttpRequest.BodyPublishers.ofString("100"))
+    public HttpResponse<String> WithdrawPost(String CUSTOMER_ID1) throws URISyntaxException, IOException, InterruptedException {
+        return httpClient.send(HttpRequest.newBuilder()
+                .uri(new URI(("http://localhost:8080/customers/" + CUSTOMER_ID1) + "/withdraw"))
+                .POST(HttpRequest.BodyPublishers.ofString("99"))
                 .build(), BodyHandlers.ofString());
-        return response1;
-    }
-
-    @Test
-    public void addAndGetTestPost() throws URISyntaxException, IOException, InterruptedException {
-        HttpResponse<String> response1 = addMoneyPost(CUSTOMER_ID1);
-        HttpResponse<String> response = getBalance(CUSTOMER_ID1);
-        assertEquals(200,response1.statusCode());
-        assertEquals("100",response.body());
 
     }
-
-
-
 
 }

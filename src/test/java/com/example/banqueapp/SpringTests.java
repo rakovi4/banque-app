@@ -50,14 +50,14 @@ class SpringTests {
 	}
 
 
-	@Test
-	void withdrawTest() throws Exception {
-		mockMvc.perform(get(WITHDRAW_99_URL))
-				.andDo(print())
-				.andExpect(status().isOk());
-
-		verify(mockAccountService).withdrawMoney(99, CUSTOMER_ID);
-	}
+//	@Test
+//	void withdrawTest() throws Exception {
+//		mockMvc.perform(get(WITHDRAW_99_URL))
+//				.andDo(print())
+//				.andExpect(status().isOk());
+//
+//		verify(mockAccountService).withdrawMoney(99, CUSTOMER_ID);
+//	}
 
 	@Test
 	void addMoneyTestPost() throws Exception {
@@ -66,6 +66,15 @@ class SpringTests {
 				.andExpect(status().isOk());
 
 		verify(mockAccountService).addMoney(101, CUSTOMER_ID );
+	}
+
+	@Test
+	void withdrawTestPost() throws Exception {
+		mockMvc.perform(post(CUSTOMER_URL + "/withdraw").content("99"))
+				.andDo(print())
+				.andExpect(status().isOk());
+
+		verify(mockAccountService).withdrawMoney(99, CUSTOMER_ID);
 	}
 
 }

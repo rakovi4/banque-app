@@ -21,16 +21,22 @@ public class HelloController {
         return String.valueOf(service.getBalance(customerId));
     }
 
-    @GetMapping(path = "/customers/{customerId}/withdraw")
-    public void withdraw(@PathVariable(name = "customerId") String customerId,
-                    @RequestParam(name = "money") String money){
-        service.withdrawMoney(Integer.parseInt(money), customerId);
-    }
+//    @GetMapping(path = "/customers/{customerId}/withdraw")
+//    public void withdraw(@PathVariable(name = "customerId") String customerId,
+//                    @RequestParam(name = "money") String money){
+//        service.withdrawMoney(Integer.parseInt(money), customerId);
+//    }
 
     @PostMapping(path = "/customers/{customerId}/add")
     public void addPost(@PathVariable(name = "customerId") String customerId,
                     @RequestBody String money){
         service.addMoney(Integer.parseInt(money), customerId);
+    }
+
+    @PostMapping(path = "/customers/{customerId}/withdraw")
+    public void withdrawPost(@PathVariable(name = "customerId") String customerId,
+                             @RequestBody String money){
+        service.withdrawMoney(Integer.parseInt(money), customerId);
     }
 
 }
